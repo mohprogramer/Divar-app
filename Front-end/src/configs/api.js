@@ -23,15 +23,11 @@ api.interceptors.request.use((request) => {
 api.interceptors.response.use((response) => {
     return response;
 }, async (error) => {
-    console.log("hallo")
   const originalRequest = error.config;
   if(error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
     const res = await getNewToken()
-    console.log(res)
     if(!res?.response) return;
-    console.log(res)
-    
     setCookie(res.response.data)
     return api(originalRequest)
   }
